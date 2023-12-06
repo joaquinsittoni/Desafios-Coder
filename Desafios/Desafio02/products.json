@@ -1,0 +1,16 @@
+[
+    {
+        "name": "Laptop Dell",
+        "price": 2700,
+        "quantity": 2,
+        "description": ["Databases", "Notebooks"],
+        "id": 1
+    },
+    {
+        "name": "Smartphone Samsung",
+        "price": 2300,
+        "quantity": 1,
+        "description": ["Data Science", "Smartphones"],
+        "id": 2
+    }
+]
