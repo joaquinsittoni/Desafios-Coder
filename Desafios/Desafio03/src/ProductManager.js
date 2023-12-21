@@ -8,48 +8,44 @@ constructor(path) {
 }
 
 async addProduct(title, description, price, thumbnail, code, stock) {
+    //id: this.products.length +1,
 
-    if (
-    title == undefined ||
-    description == undefined ||
-    price == undefined ||
-    thumbnail == undefined ||
-    code == undefined ||
-    stock == undefined
-    ) {
-    throw new Error("Todos los campos son obligatorios");
-    }
+
     try {
-    let data = await utils.readFile(this.path);
-    console.log(data);
-    this.products = data?.length > 0 ? data : [];
-    } catch (error) {
-    console.log(error);
-    }
+        if (title == undefined || description == undefined || price == undefined || thumbnail == undefined || code == undefined || stock == undefined) {
+            throw new Error("Todos los campos son obligatorios");
+        }
 
-    let codeExists = this.products.some((dato) => dato.code == code);
+        let data = await utils.readFile(this.path);
+        console.log(data);
+        this.products = data?.length > 0 ? data : [];
 
-    if (codeExists) {
-    throw new Error("El codigo ya existe por favor verifique");
-    } else {
-        const newProduct = {
-        id: crypto.randomUUID(),
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-    };
-        this.products.push(newProduct);
-        console.log(this.products.length);
-        try {
-        await utils.writeFile(this.path, this.products);
+
+        let codeExists = this.products.some((dato) => dato.code == code);
+
+
+        if (codeExists) {
+            throw new Error("El codigo ya existe por favor verifique");
+        } else {
+            const newProduct = {
+                id: crypto.randomUUID(),
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                stock,
+            };
+            this.products.push(newProduct);
+            console.log(this.products.length);
+
+
+            await utils.writeFile(this.path, this.products);
+        }
     } catch (error) {
+
         console.log(error);
     }
-    }
-
 }
 async getProducts() {
     try {
@@ -66,10 +62,13 @@ async getProductById(id) {
     this.products = data?.length > 0 ? data : [];
     let product = this.products.find((dato) => dato.id === id);
 
-        if (product !== undefined) {
-        return product;
+    if (product) {
+        res.json({ message: "success", data: product });
     } else {
-        return "no existe el producto solicitado";
+        res.json({
+            message: "el producto solicitado no existe",
+            data: null,
+        });         
     }
     } catch (error) {
     console.log(error);
